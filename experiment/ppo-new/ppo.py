@@ -79,6 +79,12 @@ class PPOMod:
         """init Quartz for each process"""
         self.init_quartz_context_func()
 
+        if not rpc.is_available():
+            raise RuntimeError(
+                'PPO distributed training requires a PyTorch build with '
+                'torch.distributed.rpc support.'
+            )
+
         """set num of OMP threads to avoid blasting the machine"""
         if self.cfg.omp_num_threads != 0:
             os.environ['OMP_NUM_THREADS'] = str(self.cfg.omp_num_threads)

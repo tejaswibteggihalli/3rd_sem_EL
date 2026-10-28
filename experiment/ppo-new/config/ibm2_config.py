@@ -28,7 +28,7 @@ class IBM2Config(BaseConfig):
 
 @dataclass
 class IBM2FTConfig(IBM2Config):
-    wandb: WandbConfig = WandbConfig.new_project('IBM-Finetune-01')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('IBM-Finetune-01'))
     greedy_sample: bool = True
     k_epochs: int = 20
     lr_gnn: float = 3e-4
@@ -44,7 +44,7 @@ class IBM2FTConfig(IBM2Config):
 
 @dataclass
 class IBM2PretrainConfig(IBM2Config):
-    wandb: WandbConfig = WandbConfig.new_project('IBM-Pretrain')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('IBM-Pretrain'))
     # quartz
     input_graphs: List[InputGraph] = field(
         default_factory=lambda: [
@@ -58,7 +58,7 @@ class IBM2PretrainConfig(IBM2Config):
 
 @dataclass
 class IBM2MPConfig(IBM2Config):
-    wandb: WandbConfig = WandbConfig.new_project('IBM-Pretrain-Multi')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('IBM-Pretrain-Multi'))
     # quartz
     input_graphs: List[InputGraph] = field(
         default_factory=lambda: [

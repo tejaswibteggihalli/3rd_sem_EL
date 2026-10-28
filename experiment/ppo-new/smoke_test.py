@@ -4,6 +4,7 @@ import dgl
 
 sys.path.insert(0, '.')
 from model.actor_critic import ActorCritic
+from model.qtransformer_depth import QTransformerDepth
 
 
 def toy_circuit(gate_types):
@@ -20,8 +21,9 @@ def toy_circuit(gate_types):
 
 batch = dgl.batch([toy_circuit([0, 1, 2, 1]), toy_circuit([3, 3, 0, 2])])
 print('batched nodes:', batch.num_nodes(), 'per-graph:', batch.batch_num_nodes().tolist())
+assert QTransformerDepth._depth(batch).tolist() == [0, 1, 2, 3, 0, 1, 2, 3]
 
-for gnn_type in ['QGNN', 'QGIN', 'QGAT', 'QTransformer']:
+for gnn_type in ['QGNN', 'QGIN', 'QGAT', 'QTransformer', 'QTransformerDepth']:
     model = ActorCritic(gnn_type=gnn_type, gnn_num_layers=4, gin_graph_pooling_type='none')
     model.eval()
     with torch.no_grad():

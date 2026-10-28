@@ -31,7 +31,7 @@ class IonQConfig(BaseConfig):
 
 @dataclass
 class IonQFTConfig(IonQConfig):
-    wandb: WandbConfig = WandbConfig.new_project('PPO-Finetune-IonQ-01')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('PPO-Finetune-IonQ-01'))
     greedy_sample: bool = True
     k_epochs: int = 20
     lr_gnn: float = 3e-5
@@ -55,7 +55,7 @@ class IonQFTConfig(IonQConfig):
 
 @dataclass
 class IonQPretrainConfig(IonQConfig):
-    wandb: WandbConfig = WandbConfig.new_project('PPO-Pretrain')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('PPO-Pretrain'))
     # quartz
     input_graphs: List[InputGraph] = field(
         default_factory=lambda: [
@@ -69,7 +69,7 @@ class IonQPretrainConfig(IonQConfig):
 
 @dataclass
 class IonQMPConfig(IonQConfig):
-    wandb: WandbConfig = WandbConfig.new_project('PPO-Pretrain-Multi')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('PPO-Pretrain-Multi'))
     # quartz
     input_graphs: List[InputGraph] = field(
         default_factory=lambda: [

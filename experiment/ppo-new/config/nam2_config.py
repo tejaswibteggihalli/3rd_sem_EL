@@ -28,7 +28,7 @@ class Nam2Config(BaseConfig):
 
 @dataclass
 class Nam2FTConfig(Nam2Config):
-    wandb: WandbConfig = WandbConfig.new_project('Nam2-Finetune-04')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('Nam2-Finetune-04'))
     greedy_sample: bool = True
     k_epochs: int = 20
     lr_gnn: float = 3e-4
@@ -52,7 +52,7 @@ class Nam2FTConfig(Nam2Config):
 
 @dataclass
 class Nam2PretrainConfig(Nam2Config):
-    wandb: WandbConfig = WandbConfig.new_project('PPO-Pretrain')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('PPO-Pretrain'))
     # quartz
     input_graphs: List[InputGraph] = field(
         default_factory=lambda: [
@@ -66,7 +66,7 @@ class Nam2PretrainConfig(Nam2Config):
 
 @dataclass
 class Nam2MPConfig(Nam2Config):
-    wandb: WandbConfig = WandbConfig.new_project('PPO-Pretrain-Multi')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('PPO-Pretrain-Multi'))
     # quartz
     input_graphs: List[InputGraph] = field(
         default_factory=lambda: [
@@ -88,7 +88,7 @@ class Nam2MPConfig(Nam2Config):
 
 @dataclass
 class Nam2RMMPConfig(Nam2Config):
-    wandb: WandbConfig = WandbConfig.new_project('PPO-Pretrain-Multi')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('PPO-Pretrain-Multi'))
     # quartz
     input_graphs: List[InputGraph] = field(
         default_factory=lambda: [

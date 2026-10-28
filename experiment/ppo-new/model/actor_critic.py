@@ -10,6 +10,7 @@ from model.basis import *
 from model.qgin import *
 from model.qgat import QGAT
 from model.qtransformer import QTransformer
+from model.qtransformer_depth import QTransformerDepth
 from model.qgnn import *
 from torch.nn.parallel import DistributedDataParallel as DDP
 
@@ -97,6 +98,16 @@ class ActorCritic(nn.Module):
                 dim_feedforward=tf_dim_feedforward,
                 out_dim=gnn_output_dim,
                 num_heads=tf_num_heads,
+            )
+        elif gnn_type.lower() == 'QTransformerDepth'.lower():
+            self.gnn = QTransformerDepth(
+                num_layers=gnn_num_layers,
+                num_gate_types=num_gate_types,
+                embed_dim=gate_type_embed_dim,
+                d_model=tf_d_model or gnn_hidden_dim,
+                out_dim=gnn_output_dim,
+                num_heads=tf_num_heads,
+                dim_feedforward=tf_dim_feedforward,
             )
         else:
             raise NotImplementedError(f'Unknown GNN type {gnn_type}.')

@@ -49,7 +49,7 @@ class BaseConfig:
     omp_num_threads: int = 4
 
     seed: int = 98765
-    wandb: WandbConfig = WandbConfig()
+    wandb: WandbConfig = field(default_factory=WandbConfig)
 
     # quartz
     gate_set: List[str] = field(
@@ -74,15 +74,15 @@ class BaseConfig:
     )
 
     # network
-    gnn_type: str = 'QGNN'  # 'QGNN', 'QGIN', 'QGAT' or 'QTransformer'
+    gnn_type: str = 'QGNN'  # 'QGNN', 'QGIN', 'QGAT', 'QTransformer', or 'QTransformerDepth'
     gate_type_embed_dim: int = 16
     gnn_num_layers: int = 4
     gnn_hidden_dim: int = 128
     gnn_output_dim: int = 128
     gat_num_heads: int = 4  # QGAT only; gnn_hidden_dim must be divisible
-    tf_num_heads: int = 4  # QTransformer only
-    tf_d_model: int = 0  # QTransformer only; 0 = use gnn_hidden_dim
-    tf_dim_feedforward: int = 0  # QTransformer only; 0 = 2 * d_model
+    tf_num_heads: int = 4  # QTransformer variants only
+    tf_d_model: int = 0  # QTransformer variants only; 0 = use gnn_hidden_dim
+    tf_dim_feedforward: int = 0  # QTransformer variants only; 0 = 2 * d_model
     gin_num_mlp_layers: int = 2
     gin_learn_eps: bool = False
     gin_neighbor_pooling_type: str = 'sum'  # 'mean', 'max'
@@ -142,7 +142,7 @@ class BaseConfig:
 
 @dataclass
 class TestConfig(BaseConfig):
-    wandb: WandbConfig = WandbConfig(False)
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig(False))
     topk: int = 3
     mode: str = 'test'
     resume: bool = True
@@ -156,7 +156,7 @@ class TestConfig(BaseConfig):
 
 @dataclass
 class ConvertConfig(BaseConfig):
-    wandb: WandbConfig = WandbConfig(False)
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig(False))
     mode: str = 'convert'
     resume: bool = True
     ckpt_output_dir: str = '.'

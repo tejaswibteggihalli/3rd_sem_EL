@@ -280,6 +280,19 @@ A transformer's core operation is **self-attention**: each item computes how muc
 
 One way to think of it: GAT is attention restricted to neighbors; a graph transformer is attention over everyone, guided by the graph. The locality constraint in section 4 is the main design issue when trying a transformer here.
 
+This repository includes two experimental transformer encoders:
+
+- **`QTransformer`** uses node order as the sequence position and ignores graph edges.
+- **`QTransformerDepth`** uses the longest-path depth of each node over the forward circuit edges
+  (`reversed == 0`) as its sinusoidal position. Nodes at the same depth share a position,
+  while self-attention remains global.
+
+`QTransformerDepth` is therefore structure-aware positional encoding, not local message
+passing. It does not make `subgraph_opt=True` safe: the full-graph rollout and the
+subgraph used during PPO training can still produce different embeddings. Use
+`subgraph_opt=False` when evaluating either transformer, or implement an explicitly
+local attention mask before comparing transformer results with the local GNN baselines.
+
 ### 7.6 How the encoder is used in RL (actor-critic with PPO)
 
 - The **critic** scores every node (how promising is acting at this gate?). Scores are used to choose which node to act on.

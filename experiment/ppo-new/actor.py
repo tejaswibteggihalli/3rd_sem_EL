@@ -26,6 +26,13 @@ from torch.distributions import Categorical
 from torch.futures import Future
 from utils import *
 
+
+_async_execution = getattr(
+    getattr(rpc, 'functions', None),
+    'async_execution',
+    lambda function: function,
+)
+
 # import quartz # type: ignore
 
 
@@ -260,7 +267,7 @@ class PPOAgent:
 
         return ActionTmp(action_node, float(node_values[action_node]), xfer_logits)
 
-    @rpc.functions.async_execution
+    @_async_execution
     @torch.no_grad()
     def select_action_batch(self, obs_id: int, state_str: str) -> Future[ActionTmp]:
         """inference a batch of queries queried by all of the observers at once"""

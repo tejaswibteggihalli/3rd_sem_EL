@@ -26,7 +26,7 @@ class TdgConfig(BaseConfig):
 
 @dataclass
 class TdgFTConfig(TdgConfig):
-    wandb: WandbConfig = WandbConfig.new_project('T_Tdg-Finetune')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('T_Tdg-Finetune'))
     greedy_sample: bool = True
     k_epochs: int = 20
     lr_gnn: float = 3e-4
@@ -50,7 +50,7 @@ class TdgFTConfig(TdgConfig):
 
 @dataclass
 class TdgMPConfig(TdgConfig):
-    wandb: WandbConfig = WandbConfig.new_project('PPO-Pretrain-Multi')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('PPO-Pretrain-Multi'))
     # quartz
     input_graphs: List[InputGraph] = field(
         default_factory=lambda: [
@@ -72,7 +72,7 @@ class TdgMPConfig(TdgConfig):
 
 @dataclass
 class TdgRMMPConfig(TdgConfig):
-    wandb: WandbConfig = WandbConfig.new_project('PPO-Pretrain-Multi')
+    wandb: WandbConfig = field(default_factory=lambda: WandbConfig.new_project('PPO-Pretrain-Multi'))
     # quartz
     input_graphs: List[InputGraph] = field(
         default_factory=lambda: [
