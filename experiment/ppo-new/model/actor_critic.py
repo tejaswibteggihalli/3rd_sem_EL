@@ -9,6 +9,7 @@ import torch.nn.functional as F
 from model.basis import *
 from model.qgin import *
 from model.qgat import QGAT
+from model.qtransformer import QTransformer
 from model.qgnn import *
 from torch.nn.parallel import DistributedDataParallel as DDP
 
@@ -27,6 +28,7 @@ class ActorCritic(nn.Module):
         gin_neighbor_pooling_type: str = 'sum',  # sum', 'mean', 'max'
         gin_graph_pooling_type: str = None,  # 'sum', 'mean', 'max'
         gat_num_heads: int = 4,
+        tf_num_heads: int = 4,
         actor_hidden_size: int = 32,
         critic_hidden_size: int = 32,
         action_dim: int = 32,
@@ -83,6 +85,15 @@ class ActorCritic(nn.Module):
                 hidden_dim=gnn_hidden_dim // gat_num_heads,
                 out_dim=gnn_output_dim,
                 num_heads=gat_num_heads,
+            )
+        elif gnn_type.lower() == 'QTransformer'.lower():
+            self.gnn = QTransformer(
+                num_layers=gnn_num_layers,
+                num_gate_types=num_gate_types,
+                embed_dim=gate_type_embed_dim,
+                d_model=gnn_hidden_dim,
+                out_dim=gnn_output_dim,
+                num_heads=tf_num_heads,
             )
         else:
             raise NotImplementedError(f'Unknown GNN type {gnn_type}.')
