@@ -74,11 +74,15 @@ class BaseConfig:
     )
 
     # network
-    gnn_type: str = 'QGNN'  # 'QGNN' or 'QGIN'
+    gnn_type: str = 'QGNN'  # 'QGNN', 'QGIN', 'QGAT' or 'QTransformer'
     gate_type_embed_dim: int = 16
     gnn_num_layers: int = 4
     gnn_hidden_dim: int = 128
     gnn_output_dim: int = 128
+    gat_num_heads: int = 4  # QGAT only; gnn_hidden_dim must be divisible
+    tf_num_heads: int = 4  # QTransformer only
+    tf_d_model: int = 0  # QTransformer only; 0 = use gnn_hidden_dim
+    tf_dim_feedforward: int = 0  # QTransformer only; 0 = 2 * d_model
     gin_num_mlp_layers: int = 2
     gin_learn_eps: bool = False
     gin_neighbor_pooling_type: str = 'sum'  # 'mean', 'max'
