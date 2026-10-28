@@ -21,7 +21,7 @@ def toy_circuit(gate_types):
 batch = dgl.batch([toy_circuit([0, 1, 2, 1]), toy_circuit([3, 3, 0, 2])])
 print('batched nodes:', batch.num_nodes(), 'per-graph:', batch.batch_num_nodes().tolist())
 
-for gnn_type in ['QGNN', 'QGIN']:
+for gnn_type in ['QGNN', 'QGIN', 'QGAT']:
     model = ActorCritic(gnn_type=gnn_type, gnn_num_layers=4, gin_graph_pooling_type='none')
     model.eval()
     with torch.no_grad():

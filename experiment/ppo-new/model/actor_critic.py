@@ -8,6 +8,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from model.basis import *
 from model.qgin import *
+from model.qgat import QGAT
 from model.qgnn import *
 from torch.nn.parallel import DistributedDataParallel as DDP
 
@@ -25,6 +26,7 @@ class ActorCritic(nn.Module):
         gin_learn_eps: bool = False,
         gin_neighbor_pooling_type: str = 'sum',  # sum', 'mean', 'max'
         gin_graph_pooling_type: str = None,  # 'sum', 'mean', 'max'
+        gat_num_heads: int = 4,
         actor_hidden_size: int = 32,
         critic_hidden_size: int = 32,
         action_dim: int = 32,
@@ -71,6 +73,16 @@ class ActorCritic(nn.Module):
                 learn_eps=gin_learn_eps,
                 neighbor_pooling_type=gin_neighbor_pooling_type,
                 graph_pooling_type=gin_graph_pooling_type,
+            )
+        elif gnn_type.lower() == 'QGAT'.lower():
+            assert gnn_hidden_dim % gat_num_heads == 0, 'gnn_hidden_dim must be divisible by gat_num_heads'
+            self.gnn = QGAT(
+                num_layers=gnn_num_layers,
+                num_gate_types=num_gate_types,
+                in_dim=gate_type_embed_dim,
+                hidden_dim=gnn_hidden_dim // gat_num_heads,
+                out_dim=gnn_output_dim,
+                num_heads=gat_num_heads,
             )
         else:
             raise NotImplementedError(f'Unknown GNN type {gnn_type}.')
