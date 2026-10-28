@@ -29,6 +29,8 @@ class ActorCritic(nn.Module):
         gin_graph_pooling_type: str = None,  # 'sum', 'mean', 'max'
         gat_num_heads: int = 4,
         tf_num_heads: int = 4,
+        tf_d_model: int = None,
+        tf_dim_feedforward: int = None,
         actor_hidden_size: int = 32,
         critic_hidden_size: int = 32,
         action_dim: int = 32,
@@ -91,7 +93,8 @@ class ActorCritic(nn.Module):
                 num_layers=gnn_num_layers,
                 num_gate_types=num_gate_types,
                 embed_dim=gate_type_embed_dim,
-                d_model=gnn_hidden_dim,
+                d_model=tf_d_model or gnn_hidden_dim,
+                dim_feedforward=tf_dim_feedforward,
                 out_dim=gnn_output_dim,
                 num_heads=tf_num_heads,
             )
