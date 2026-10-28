@@ -106,7 +106,7 @@ class QGAT(nn.Module):
     def forward(self, g: dgl.DGLGraph):
         graph: dgl.DGLGraph
         if self.add_self_loop:
-            graph = dgl.add_self_loop(g)
+            graph = dgl.add_self_loop(g, fill_data=2)
         else:
             graph = g
         h: torch.Tensor = self.embedding(graph.ndata['gate_type'])
