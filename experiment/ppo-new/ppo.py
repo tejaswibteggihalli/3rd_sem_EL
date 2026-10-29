@@ -244,7 +244,7 @@ class PPOMod:
                 project=self.cfg.wandb.project,
                 entity=self.cfg.wandb.entity,
                 mode=self.wandb_mode,
-                config=self.cfg,  # type: ignore
+                config=(OmegaConf.to_container(self.cfg, resolve=True) if OmegaConf.is_config(self.cfg) else self.cfg),  # type: ignore
                 name=run_name,
             )
         printfl(f'rank {self.rank} / {self.ddp_processes} on {self.device} initialized')
