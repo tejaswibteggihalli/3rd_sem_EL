@@ -97,7 +97,7 @@ class PPOMod:
         tot_processes = ddp_processes + obs_processes
         rpc_backend_options = rpc.TensorPipeRpcBackendOptions(
             init_method=f'tcp://localhost:{self.cfg.ddp_port + 1}',
-            rpc_timeout=0,
+            rpc_timeout=864000,
         )
 
         if rank < ddp_processes:
