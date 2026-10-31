@@ -124,6 +124,10 @@ class Tester:
                 ret_circ = self.random_search(circ_name, circ)
                 if ret_circ:  # better
                     best_graphs[circ_name] = ret_circ
+                    out_dir = os.path.join(self.output_dir, "test_best_circs")
+                    os.makedirs(out_dir, exist_ok=True)
+                    with open(os.path.join(out_dir, f"{circ_name}.qasm"), "w") as f:
+                        f.write(ret_circ.to_qasm_str())
                     printfl(
                         f"Test: better circ: cost = {get_cost(ret_circ, self.cost_type)}"
                     )
